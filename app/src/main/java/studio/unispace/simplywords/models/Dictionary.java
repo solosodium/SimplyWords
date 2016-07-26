@@ -21,6 +21,8 @@ public class Dictionary {
      * static variables
      */
 
+    public static final String TAG = "Dictionary.java";
+
     public static final String FILE_NAME = "dictionary.json";
 
     /**
@@ -42,30 +44,65 @@ public class Dictionary {
      */
 
     public static void save (Context ctx, Dictionary dict) {
+        // get root directory
+        String root_path = "";
+        File root_dir = ctx.getExternalFilesDir(null);
+        if (root_dir != null) {
+            root_path = root_dir.getAbsolutePath();
+        } else {
+            Log.e(TAG, "root directory not found");
+            return;
+        }
+        // make sure directory exists
+        File dir = new File(root_path);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "create root directory error");
+                return;
+            }
+        }
         // prepare data
         Gson gson = new Gson();
         String serialized = gson.toJson(dict);
         byte[] bytes = serialized.getBytes();
-
-        File file = new File(ctx.getFilesDir(), FILE_NAME);
+        File file = new File(root_path + "/" + FILE_NAME);
         try {
-
-            FileOutputStream fos = ctx.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = new FileOutputStream(file);
             fos.write(bytes);
             fos.close();
+        } catch (IOException e) {
+            Log.e(TAG, "write json file error");
+            e.printStackTrace();
+        }
+    }
 
-            FileInputStream fis = ctx.openFileInput(FILE_NAME);
-            StringBuffer fileContent = new StringBuffer("");
+    public static Dictionary load (Context ctx) {
+        // get root directory
+        String root_path = "";
+        File root_dir = ctx.getExternalFilesDir(null);
+        if (root_dir != null) {
+            root_path = root_dir.getAbsolutePath();
+        } else {
+            Log.e(TAG, "root directory not found");
+            return null;
+        }
+        // read file
+        File file = new File(root_path + "/" + FILE_NAME);
+        StringBuffer sb = new StringBuffer("");
+        try {
+            FileInputStream fis = new FileInputStream(file);
             byte[] buffer = new byte[1024];
             int n;
             while ((n = fis.read(buffer)) != -1) {
-                fileContent.append(new String(buffer, 0, n));
+                sb.append(new String(buffer, 0, n));
             }
-            Log.d("TEST", fileContent.toString());
-
         } catch (IOException e) {
+            Log.e(TAG, "read json file error");
             e.printStackTrace();
         }
+        // GSON
+        Gson gson = new Gson();
+        return gson.fromJson(sb.toString(), Dictionary.class);
     }
 
     /**
@@ -78,6 +115,8 @@ public class Dictionary {
         w.word = "ni ma";
         dict.addWord(w);
         Dictionary.save(ctx, dict);
+        Dictionary dict2 = Dictionary.load(ctx);
+        Log.d(TAG, dict2.words.get(0).word);
     }
 
 }
