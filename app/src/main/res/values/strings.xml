@@ -1,4 +1,12 @@
 <resources>
+    
+    <!-- app wide -->
     <string name="app_name">Simply Words</string>
-    <string name="action_settings">Settings</string>
+    
+    <!-- MainActivity menu -->
+    <string name="action_search">Search</string>
+    <string name="action_sort_initial_letter">Sort by initial letter</string>
+    <string name="action_sort_created_date">Sort by created date</string>
+    <string name="action_sort_visited_date">Sort by visited date</string>
+    
 </resources>

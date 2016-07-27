@@ -3,8 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="studio.unispace.simplywords.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_search"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+    <item
+        android:id="@+id/action_sort_initial_letter"
+        android:title="@string/action_sort_initial_letter"
+        android:orderInCategory="101"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sort_created_date"
+        android:title="@string/action_sort_created_date"
+        android:orderInCategory="102"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sort_visited_date"
+        android:title="@string/action_sort_visited_date"
+        android:orderInCategory="103"
         app:showAsAction="never" />
 </menu>
