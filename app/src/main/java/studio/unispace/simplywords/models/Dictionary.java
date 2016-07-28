@@ -21,9 +21,9 @@ public class Dictionary {
      * static variables
      */
 
-    public static final String TAG = "Dictionary.java";
+    private static final String TAG = "Dictionary.java";
 
-    public static final String FILE_NAME = "dictionary.json";
+    private static final String FILE_NAME = "dictionary.json";
 
     /**
      * Class Dictionay
