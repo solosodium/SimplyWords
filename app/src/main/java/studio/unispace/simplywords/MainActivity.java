@@ -4,14 +4,24 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import studio.unispace.simplywords.adapters.WordListAdapter;
 import studio.unispace.simplywords.models.Dictionary;
+import studio.unispace.simplywords.models.Word;
 
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView wordList;
+    private LinearLayoutManager linearLayoutManager;
+    private WordListAdapter wordListAdapter;
+
+    private Dictionary dict;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +38,26 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        //
+        // initialize data
+        //
+        dict = new Dictionary();
+        for (int i=0; i<20; i++) {
+            Word w = new Word();
+            w.word = "Word " + i;
+            dict.addWord(w);
+        }
+        Dictionary.save(this, dict);
 
-
-        Dictionary.Testing(MainActivity.this);
+        //
+        // initialize views
+        //
+        wordList = (RecyclerView)findViewById(R.id.main_word_list);
+        wordList.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(this);
+        wordList.setLayoutManager(linearLayoutManager);
+        wordListAdapter = new WordListAdapter(dict);
+        wordList.setAdapter(wordListAdapter);
     }
 
     @Override
