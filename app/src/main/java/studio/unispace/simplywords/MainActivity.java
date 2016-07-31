@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0; i<20; i++) {
             Word w = new Word();
             w.word = "Word " + i;
+            w.rating = (float)i;
             dict.addWord(w);
         }
         Dictionary.save(this, dict);

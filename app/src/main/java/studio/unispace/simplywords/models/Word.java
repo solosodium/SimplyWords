@@ -15,7 +15,7 @@ public class Word {
     public Map<String, String> remarks;
     public Long createTime;
     public List<Long> visitTimes;
-    public Integer rating;
+    public Float rating;
 
     public Word () {
         word = "";
@@ -23,7 +23,7 @@ public class Word {
         remarks = new HashMap<>();
         createTime = System.currentTimeMillis() / 1000L;
         visitTimes = new LinkedList<>();
-        rating = 0;
+        rating = 0f;
     }
 
 }

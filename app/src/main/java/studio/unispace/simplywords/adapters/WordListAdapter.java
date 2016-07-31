@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import studio.unispace.simplywords.R;
 import studio.unispace.simplywords.models.Dictionary;
+import studio.unispace.simplywords.view.RatingView;
 
 /**
  * Created by haofu on 7/29/16.
@@ -44,8 +45,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mDict.words.get(position).word);
-
+        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mDict.words.get(position).word.toUpperCase());
+        ((RatingView)holder.mView.findViewById(R.id.word_list_item_rating)).setRating(mDict.words.get(position).rating);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
