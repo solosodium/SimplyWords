@@ -36,7 +36,7 @@ public class Dictionary {
     }
 
     public void addWord (Word w) {
-        words.add(w);
+        words.add(0, w);    // add to the top of the list (LIFO)
     }
 
     /**

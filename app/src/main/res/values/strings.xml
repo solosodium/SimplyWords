@@ -1,12 +1,21 @@
 <resources>
-    
+
     <!-- app wide -->
     <string name="app_name">Simply Words</string>
-    
+
     <!-- MainActivity menu -->
     <string name="action_search">Search</string>
-    <string name="action_sort_initial_letter">Sort by initial letter</string>
-    <string name="action_sort_created_date">Sort by created date</string>
-    <string name="action_sort_visited_date">Sort by visited date</string>
-    
+    <string name="action_sort_initial_letter">Sort by Initial Letter</string>
+    <string name="action_sort_created_date">Sort by Created Date</string>
+    <string name="action_sort_visited_date">Sort by Visited Date</string>
+
+    <!-- AddWordDialog -->
+    <string name="add_word_dialog_title">Add Word</string>
+    <string name="add_word_dialog_word_label">Word</string>
+    <string name="add_word_dialog_definition_label">Definition</string>
+    <string name="add_word_dialog_remark_label">Remark</string>
+    <string name="add_word_dialog_rating_label">Rating</string>
+    <string name="add_word_dialog_done_label">Add</string>
+    <string name="add_word_dialog_cancel_label">Cancel</string>
+
 </resources>

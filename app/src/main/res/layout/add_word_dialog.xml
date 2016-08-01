@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/add_word_dialog_horizontal_padding"
+    android:paddingRight="@dimen/add_word_dialog_horizontal_padding"
+    android:paddingTop="@dimen/add_word_dialog_vertical_padding"
+    android:paddingBottom="@dimen/add_word_dialog_vertical_padding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_word_dialog_word_label"/>
+
+    <EditText
+        android:id="@+id/add_word_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:inputType="textNoSuggestions|textVisiblePassword"/>
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/add_word_dialog_definition_label"
+    android:layout_marginTop="@dimen/add_word_dialog_line_break"/>
+
+    <EditText
+        android:id="@+id/add_word_definition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_word_dialog_remark_label"
+        android:layout_marginTop="@dimen/add_word_dialog_line_break"/>
+
+    <EditText
+        android:id="@+id/add_word_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_word_dialog_rating_label"
+        android:layout_marginTop="@dimen/add_word_dialog_line_break"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="5"
+        android:layout_marginTop="@dimen/add_word_dialog_line_break"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/add_word_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10"/>
+
+</LinearLayout>

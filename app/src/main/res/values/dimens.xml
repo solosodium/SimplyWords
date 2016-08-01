@@ -12,4 +12,8 @@
     <dimen name="word_list_item_horizontal_padding">10dp</dimen>
     <dimen name="word_list_item_vertical_padding">10dp</dimen>
     <dimen name="word_list_item_word_font_size">20sp</dimen>
+    <!-- add word dialog -->
+    <dimen name="add_word_dialog_horizontal_padding">24dp</dimen>
+    <dimen name="add_word_dialog_vertical_padding">20dp</dimen>
+    <dimen name="add_word_dialog_line_break">10dp</dimen>
 </resources>
