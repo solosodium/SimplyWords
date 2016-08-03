@@ -1,13 +1,16 @@
 package studio.unispace.simplywords.adapters;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import studio.unispace.simplywords.MainActivity;
 import studio.unispace.simplywords.R;
-import studio.unispace.simplywords.models.Dictionary;
 import studio.unispace.simplywords.view.RatingView;
 
 /**
@@ -15,6 +18,8 @@ import studio.unispace.simplywords.view.RatingView;
  */
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> {
+
+    private MainActivity mActivity;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
@@ -24,10 +29,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         }
     }
 
-    private Dictionary mDict;
-
-    public WordListAdapter (Dictionary dict) {
-        mDict = dict;
+    public WordListAdapter (MainActivity activity) {
+        mActivity = activity;
     }
 
     // Create new views (invoked by the layout manager)
@@ -42,16 +45,38 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mDict.words.get(position).word.toUpperCase());
-        ((RatingView)holder.mView.findViewById(R.id.word_list_item_rating)).setRating(mDict.words.get(position).rating);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mActivity.dict.words.get(position).word);
+        ((RatingView)holder.mView.findViewById(R.id.word_list_item_rating)).setRating(mActivity.dict.words.get(position).rating);
+        holder.mView.findViewById(R.id.word_list_item_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // create dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                builder.setTitle(R.string.delete_word_dialog_title);
+                builder.setMessage(R.string.delete_word_dialog_body);
+                builder.setCancelable(true);
+                builder.setNegativeButton(R.string.delete_word_dialog_negative, null);
+                builder.setPositiveButton(R.string.delete_word_dialog_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mActivity.deleteWordFromDictionary(position);
+                    }
+                });
+                builder.show();
+            }
+        });
+        holder.mView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("SS", "SS");
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDict.words.size();
+        return mActivity.dict.words.size();
     }
 }

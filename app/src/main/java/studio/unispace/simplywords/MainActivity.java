@@ -22,8 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private WordListAdapter wordListAdapter;
 
-    private Dictionary dict;
-    private int stackLevel;
+    public Dictionary dict;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //
         // FAB
         //
@@ -53,16 +51,9 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         //
-        // initialize data (TESTING)
+        // load dictionary data
         //
-        dict = new Dictionary();
-        for (int i=0; i<10; i++) {
-            Word w = new Word();
-            w.word = "Word " + i;
-            w.rating = (float) Math.random() * 10;
-            dict.addWord(w);
-        }
-        Dictionary.save(this, dict);
+        dict = Dictionary.load(this);
         //
         // initialize views
         //
@@ -71,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             wordList.setHasFixedSize(true);
             linearLayoutManager = new LinearLayoutManager(this);
             wordList.setLayoutManager(linearLayoutManager);
-            wordListAdapter = new WordListAdapter(dict);
+            wordListAdapter = new WordListAdapter(this);
             wordList.setAdapter(wordListAdapter);
         }
     }
@@ -103,4 +94,27 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //
+    // public functions
+    //
+
+    public void addWordToDictionary (Word word) {
+        // add word
+        dict.addWord(word);
+        // update view
+        wordListAdapter.notifyDataSetChanged();
+        // save
+        Dictionary.save(this, dict);
+    }
+
+    public void deleteWordFromDictionary (int position) {
+        // delete word
+        dict.deleteWord(position);
+        // update view
+        wordListAdapter.notifyDataSetChanged();
+        // save
+        Dictionary.save(this, dict);
+    }
+
 }

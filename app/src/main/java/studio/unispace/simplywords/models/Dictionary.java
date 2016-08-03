@@ -39,13 +39,17 @@ public class Dictionary {
         words.add(0, w);    // add to the top of the list (LIFO)
     }
 
+    public void deleteWord (int idx) {
+        words.remove(idx);
+    }
+
     /**
      * static functions
      */
 
     public static void save (Context ctx, Dictionary dict) {
         // get root directory
-        String root_path = "";
+        String root_path;
         File root_dir = ctx.getExternalFilesDir(null);
         if (root_dir != null) {
             root_path = root_dir.getAbsolutePath();
@@ -78,7 +82,7 @@ public class Dictionary {
 
     public static Dictionary load (Context ctx) {
         // get root directory
-        String root_path = "";
+        String root_path;
         File root_dir = ctx.getExternalFilesDir(null);
         if (root_dir != null) {
             root_path = root_dir.getAbsolutePath();
@@ -86,23 +90,34 @@ public class Dictionary {
             Log.e(TAG, "root directory not found");
             return null;
         }
-        // read file
+        // check file exist
         File file = new File(root_path + "/" + FILE_NAME);
-        StringBuffer sb = new StringBuffer("");
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            byte[] buffer = new byte[1024];
-            int n;
-            while ((n = fis.read(buffer)) != -1) {
-                sb.append(new String(buffer, 0, n));
+        if (file.exists()) {
+            // read file
+            StringBuffer sb = new StringBuffer("");
+            try {
+                FileInputStream fis = new FileInputStream(file);
+                byte[] buffer = new byte[1024];
+                int n;
+                while ((n = fis.read(buffer)) != -1) {
+                    sb.append(new String(buffer, 0, n));
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "read json file error");
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            Log.e(TAG, "read json file error");
-            e.printStackTrace();
+            // GSON
+            Gson gson = new Gson();
+            return gson.fromJson(sb.toString(), Dictionary.class);
         }
-        // GSON
-        Gson gson = new Gson();
-        return gson.fromJson(sb.toString(), Dictionary.class);
+        else {
+            // create empty file
+            Dictionary dict = new Dictionary();
+            // save dictionary
+            save(ctx, dict);
+            // return
+            return dict;
+        }
     }
 
     /**

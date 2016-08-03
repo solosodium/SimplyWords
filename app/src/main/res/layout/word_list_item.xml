@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.95"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/word_list_item_horizontal_padding"
                 android:paddingRight="@dimen/word_list_item_horizontal_padding"
                 android:paddingTop="@dimen/word_list_item_vertical_padding"
@@ -38,11 +38,28 @@
 
                 <TextView
                     android:id="@+id/word_list_item_word"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
                     android:layout_height="match_parent"
                     android:textSize="@dimen/word_list_item_word_font_size"
                     android:gravity="left|center_vertical"
                     android:ellipsize="marquee"/>
+
+                <ImageButton
+                    android:id="@+id/word_list_item_edit"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.1"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_edit"
+                    android:scaleType="centerCrop"/>
+
+                <ImageButton
+                    android:id="@+id/word_list_item_delete"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.1"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_delete"
+                    android:scaleType="centerCrop"/>
 
             </LinearLayout>
 
