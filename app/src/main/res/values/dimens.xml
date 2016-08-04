@@ -16,4 +16,10 @@
     <dimen name="add_word_dialog_horizontal_padding">24dp</dimen>
     <dimen name="add_word_dialog_vertical_padding">20dp</dimen>
     <dimen name="add_word_dialog_line_break">10dp</dimen>
+    <!-- review word dialog -->
+    <dimen name="review_word_dialog_horizontal_padding">24dp</dimen>
+    <dimen name="review_word_dialog_vertical_padding">20dp</dimen>
+    <dimen name="review_word_dialog_line_break">10dp</dimen>
+    <dimen name="review_word_content_font_size">18sp</dimen>
+    <dimen name="review_word_rating_bar_height">40dp</dimen>
 </resources>

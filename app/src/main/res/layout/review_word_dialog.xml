@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/review_word_dialog_horizontal_padding"
+    android:paddingRight="@dimen/review_word_dialog_horizontal_padding"
+    android:paddingTop="@dimen/review_word_dialog_vertical_padding"
+    android:paddingBottom="@dimen/review_word_dialog_vertical_padding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/review_word_dialog_word_label"/>
+
+    <TextView
+        android:id="@+id/review_word_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/review_word_dialog_line_break"
+        android:textSize="@dimen/review_word_content_font_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/review_word_dialog_definition_label"
+        android:layout_marginTop="@dimen/review_word_dialog_line_break"/>
+
+    <TextView
+        android:id="@+id/review_word_definition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/review_word_dialog_line_break"
+        android:textSize="@dimen/review_word_content_font_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/review_word_dialog_remark_label"
+        android:layout_marginTop="@dimen/review_word_dialog_line_break"/>
+
+    <TextView
+        android:id="@+id/review_word_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="@dimen/review_word_dialog_line_break"
+        android:textSize="@dimen/review_word_content_font_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/review_word_dialog_rating_label"
+        android:layout_marginTop="@dimen/review_word_dialog_line_break"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/review_word_rating_bar_height"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/review_word_dialog_line_break">
+
+        <ImageButton
+            android:id="@+id/review_word_down_vote"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_down"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackground"/>
+
+        <TextView
+            android:id="@+id/review_word_rating"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/review_word_content_font_size"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/review_word_up_vote"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_up"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackground"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

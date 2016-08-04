@@ -25,4 +25,21 @@ public class Word {
         rating = 0f;
     }
 
+    // copy constructor
+    public Word (Word w) {
+        word = w.word;
+        definition = w.definition;
+        remark = w.remark;
+        createTime = w.createTime;
+        visitTimes = new LinkedList<>();
+        for (Long i : w.visitTimes) {
+            visitTimes.add(i);
+        }
+        rating = w.rating;
+    }
+
+    public void addVisitTime () {
+        visitTimes.add(Calendar.getInstance().getTimeInMillis() / 1000L);
+    }
+
 }

@@ -1,9 +1,11 @@
 package studio.unispace.simplywords.adapters;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +13,18 @@ import android.widget.TextView;
 
 import studio.unispace.simplywords.MainActivity;
 import studio.unispace.simplywords.R;
-import studio.unispace.simplywords.view.RatingView;
+import studio.unispace.simplywords.dialogs.EditWordDialog;
+import studio.unispace.simplywords.dialogs.ReviewWordDialog;
+import studio.unispace.simplywords.views.RatingView;
 
 /**
  * Created by haofu on 7/29/16.
  */
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> {
+
+    public static final String REVIEW_WORD_DIALOG_WORD_POS = "WORD_POS";
+    public static final String EDIT_WORD_DIALOG_WORD_POS = "WORD_POS";
 
     private MainActivity mActivity;
 
@@ -66,10 +73,44 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 builder.show();
             }
         });
+        holder.mView.findViewById(R.id.word_list_item_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // create edit dialog
+                FragmentTransaction ft = mActivity.getFragmentManager().beginTransaction();
+                Fragment prev = mActivity.getFragmentManager().findFragmentByTag("edit_word_dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+                // create dialog
+                EditWordDialog editWordDialog = new EditWordDialog();
+                // pass arguments
+                Bundle args = new Bundle();
+                args.putInt(EDIT_WORD_DIALOG_WORD_POS, position);
+                editWordDialog.setArguments(args);
+                // show dialog
+                editWordDialog.show(ft, "edit_word_dialog");
+            }
+        });
         holder.mView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.d("SS", "SS");
+                // create review dialog
+                FragmentTransaction ft = mActivity.getFragmentManager().beginTransaction();
+                Fragment prev = mActivity.getFragmentManager().findFragmentByTag("review_word_dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+                // create dialog
+                ReviewWordDialog reviewWordDialog = new ReviewWordDialog();
+                // pass arguments
+                Bundle args = new Bundle();
+                args.putInt(REVIEW_WORD_DIALOG_WORD_POS, position);
+                reviewWordDialog.setArguments(args);
+                // show dialog
+                reviewWordDialog.show(ft, "review_word_dialog");
             }
         });
     }

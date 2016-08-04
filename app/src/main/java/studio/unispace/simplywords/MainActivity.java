@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import studio.unispace.simplywords.adapters.WordListAdapter;
+import studio.unispace.simplywords.dialogs.AddWordDialog;
 import studio.unispace.simplywords.models.Dictionary;
 import studio.unispace.simplywords.models.Word;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                         ft.remove(prev);
                     }
                     ft.addToBackStack(null);
-                    // Create and show the dialog.
+                    // create and show the dialog
                     AddWordDialog addWordDialog = new AddWordDialog();
                     addWordDialog.show(ft, "add_word_dialog");
                 }
@@ -102,19 +103,29 @@ public class MainActivity extends AppCompatActivity {
     public void addWordToDictionary (Word word) {
         // add word
         dict.addWord(word);
-        // update view
-        wordListAdapter.notifyDataSetChanged();
         // save
         Dictionary.save(this, dict);
+        // update view
+        wordListAdapter.notifyDataSetChanged();
     }
 
     public void deleteWordFromDictionary (int position) {
         // delete word
         dict.deleteWord(position);
-        // update view
-        wordListAdapter.notifyDataSetChanged();
         // save
         Dictionary.save(this, dict);
+        // update view
+        wordListAdapter.notifyDataSetChanged();
+    }
+
+    public void saveDictionary () {
+        // save
+        Dictionary.save(this, dict);
+    }
+
+    public void refreshList () {
+        // update view
+        wordListAdapter.notifyDataSetChanged();
     }
 
 }

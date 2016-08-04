@@ -1,4 +1,4 @@
-package studio.unispace.simplywords.view;
+package studio.unispace.simplywords.views;
 
 import android.content.Context;
 import android.graphics.Canvas;

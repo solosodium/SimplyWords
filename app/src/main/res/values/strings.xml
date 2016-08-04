@@ -2,6 +2,7 @@
 
     <!-- app wide -->
     <string name="app_name">Simply Words</string>
+    <string name="placeholder_text">Word list is empty, press \'\'+\'\' to add words.</string>
 
     <!-- MainActivity menu -->
     <string name="action_search">Search</string>
@@ -10,7 +11,7 @@
     <string name="action_sort_visited_date">Sort by Visited Date</string>
 
     <!-- AddWordDialog -->
-    <string name="add_word_dialog_title">Add A Word</string>
+    <string name="add_word_dialog_title">Add Word</string>
     <string name="add_word_dialog_word_label">Word</string>
     <string name="add_word_dialog_definition_label">Definition</string>
     <string name="add_word_dialog_remark_label">Remark</string>
@@ -23,5 +24,18 @@
     <string name="delete_word_dialog_body">Are you sure you want to delete this word?</string>
     <string name="delete_word_dialog_positive">Delete</string>
     <string name="delete_word_dialog_negative">Cancel</string>
+
+    <!-- ReviewWordDialog -->
+    <string name="review_word_dialog_title">Review Word</string>
+    <string name="review_word_dialog_word_label">Word</string>
+    <string name="review_word_dialog_definition_label">Definition</string>
+    <string name="review_word_dialog_remark_label">Remark</string>
+    <string name="review_word_dialog_rating_label">Rating</string>
+    <string name="review_word_dialog_done_label">Done</string>
+
+    <!-- EditWordDialog -->
+    <string name="edit_word_dialog_title">Edit Word</string>
+    <string name="edit_word_dialog_done_label">Save</string>
+    <string name="edit_word_dialog_cancel_label">Cancel</string>
 
 </resources>
