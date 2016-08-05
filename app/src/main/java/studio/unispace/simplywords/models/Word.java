@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Word {
 
+    public Long id;
     public String word;
     public String definition;
     public String remark;
@@ -17,6 +18,7 @@ public class Word {
     public Float rating;
 
     public Word () {
+        id = Calendar.getInstance().getTimeInMillis();
         word = "";
         definition = "";
         remark = "";
@@ -27,6 +29,7 @@ public class Word {
 
     // copy constructor
     public Word (Word w) {
+        id = w.id;
         word = w.word;
         definition = w.definition;
         remark = w.remark;

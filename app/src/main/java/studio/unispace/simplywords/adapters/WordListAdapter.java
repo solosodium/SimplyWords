@@ -38,6 +38,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     public WordListAdapter (MainActivity activity) {
         mActivity = activity;
+        // has unique id for animation
+        setHasStableIds(true);
     }
 
     // Create new views (invoked by the layout manager)
@@ -115,9 +117,15 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    // Return the size of your data set (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mActivity.dict.words.size();
+    }
+
+    // Return unique ID to enable item update animation
+    @Override
+    public long getItemId(int position) {
+        return mActivity.dict.words.get(position).id;
     }
 }
