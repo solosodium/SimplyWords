@@ -6,9 +6,9 @@
 
     <!-- MainActivity menu -->
     <string name="action_search">Search</string>
-    <string name="action_sort_initial_letter">Sort by Initial Letter</string>
+    <string name="action_sort_initial_letter">Sort A to Z</string>
+    <string name="action_sort_rating">Sort by Rating</string>
     <string name="action_sort_created_date">Sort by Created Date</string>
-    <string name="action_sort_visited_date">Sort by Visited Date</string>
 
     <!-- AddWordDialog -->
     <string name="add_word_dialog_title">Add Word</string>

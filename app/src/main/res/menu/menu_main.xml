@@ -15,13 +15,13 @@
         android:orderInCategory="101"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_sort_created_date"
-        android:title="@string/action_sort_created_date"
+        android:id="@+id/action_sort_rating"
+        android:title="@string/action_sort_rating"
         android:orderInCategory="102"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_sort_visited_date"
-        android:title="@string/action_sort_visited_date"
+        android:id="@+id/action_sort_created_date"
+        android:title="@string/action_sort_created_date"
         android:orderInCategory="103"
         app:showAsAction="never" />
 </menu>

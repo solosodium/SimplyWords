@@ -11,10 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
 import studio.unispace.simplywords.MainActivity;
 import studio.unispace.simplywords.R;
 import studio.unispace.simplywords.dialogs.EditWordDialog;
 import studio.unispace.simplywords.dialogs.ReviewWordDialog;
+import studio.unispace.simplywords.models.Word;
 import studio.unispace.simplywords.views.RatingView;
 
 /**
@@ -27,6 +33,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     public static final String EDIT_WORD_DIALOG_WORD_POS = "WORD_POS";
 
     private MainActivity mActivity;
+    private List<Word> mWords;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
@@ -38,6 +45,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     public WordListAdapter (MainActivity activity) {
         mActivity = activity;
+        mWords = activity.dict.words;
         // has unique id for animation
         setHasStableIds(true);
     }
@@ -55,8 +63,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mActivity.dict.words.get(position).word);
-        ((RatingView)holder.mView.findViewById(R.id.word_list_item_rating)).setRating(mActivity.dict.words.get(position).rating);
+        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mWords.get(position).word);
+        ((RatingView)holder.mView.findViewById(R.id.word_list_item_rating)).setRating(mWords.get(position).rating);
         holder.mView.findViewById(R.id.word_list_item_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,12 +128,61 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     // Return the size of your data set (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mActivity.dict.words.size();
+        return mWords.size();
     }
 
     // Return unique ID to enable item update animation
     @Override
     public long getItemId(int position) {
-        return mActivity.dict.words.get(position).id;
+        return mWords.get(position).id;
     }
+
+    //
+    // public methods
+    //
+
+    public void filter (String query) {
+        if (!query.equals("")) {
+            mWords = new LinkedList<>();
+            for (Word w : mActivity.dict.words) {
+                if (w.word.contains(query)) {
+                    mWords.add(w);
+                }
+            }
+        } else {
+            consolidateWords();
+        }
+    }
+
+    public void consolidateWords () {
+        mWords = mActivity.dict.words;
+    }
+
+    public void sortByInitialLetter () {
+        Collections.sort(mWords, new Comparator<Word>() {
+            @Override
+            public int compare(Word lhs, Word rhs) {
+                return lhs.word.compareToIgnoreCase(rhs.word);
+            }
+        });
+    }
+
+    public void sortByRating () {
+        Collections.sort(mWords, new Comparator<Word>() {
+            @Override
+            public int compare(Word lhs, Word rhs) {
+                return (int)(rhs.rating - lhs.rating);
+            }
+        });
+    }
+
+    public void sortByCreatedDate () {
+        Collections.sort(mWords, new Comparator<Word>() {
+            @Override
+            public int compare(Word lhs, Word rhs) {
+                return (int)(rhs.createTime - lhs.createTime);
+            }
+        });
+    }
+
 }

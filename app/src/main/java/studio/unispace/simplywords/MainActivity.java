@@ -4,13 +4,16 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import studio.unispace.simplywords.adapters.WordListAdapter;
 import studio.unispace.simplywords.dialogs.AddWordDialog;
@@ -19,6 +22,7 @@ import studio.unispace.simplywords.models.Word;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView hintText;
     private RecyclerView wordList;
     private LinearLayoutManager linearLayoutManager;
     private WordListAdapter wordListAdapter;
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         //
         // initialize views
         //
+        hintText = (TextView)findViewById(R.id.main_hint);
+        hintText.setVisibility(dict.words.size() == 0 ? View.VISIBLE : View.INVISIBLE);
         wordList = (RecyclerView)findViewById(R.id.main_word_list);
         if (wordList != null) {
             wordList.setHasFixedSize(true);
@@ -72,6 +78,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        // initialize search view
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView)MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                wordListAdapter.filter(query);
+                refreshList();
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                wordListAdapter.filter(newText);
+                refreshList();
+                return true;
+            }
+        });
         return true;
     }
 
@@ -85,12 +108,18 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_sort_initial_letter) {
+            wordListAdapter.sortByInitialLetter();
+            refreshList();
+            return true;
+        }
+        else if (id == R.id.action_sort_rating) {
+            wordListAdapter.sortByRating();
+            refreshList();
             return true;
         }
         else if (id == R.id.action_sort_created_date) {
-            return true;
-        }
-        else if (id == R.id.action_sort_visited_date) {
+            wordListAdapter.sortByCreatedDate();
+            refreshList();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -103,19 +132,17 @@ public class MainActivity extends AppCompatActivity {
     public void addWordToDictionary (Word word) {
         // add word
         dict.addWord(word);
-        // save
-        Dictionary.save(this, dict);
-        // update view
-        wordListAdapter.notifyDataSetChanged();
+        saveDictionary();
+        wordListAdapter.consolidateWords();
+        refreshList();
     }
 
     public void deleteWordFromDictionary (int position) {
         // delete word
         dict.deleteWord(position);
-        // save
-        Dictionary.save(this, dict);
-        // update view
-        wordListAdapter.notifyDataSetChanged();
+        saveDictionary();
+        wordListAdapter.consolidateWords();
+        refreshList();
     }
 
     public void saveDictionary () {
@@ -126,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
     public void refreshList () {
         // update view
         wordListAdapter.notifyDataSetChanged();
+        // update hint text
+        if (hintText != null) {
+            hintText.setVisibility(dict.words.size() == 0 ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
 }
