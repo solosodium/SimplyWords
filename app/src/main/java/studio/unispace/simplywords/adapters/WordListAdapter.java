@@ -1,9 +1,11 @@
 package studio.unispace.simplywords.adapters;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,6 +21,7 @@ import studio.unispace.simplywords.R;
 import studio.unispace.simplywords.dialogs.EditWordDialog;
 import studio.unispace.simplywords.dialogs.ReviewWordDialog;
 import studio.unispace.simplywords.models.Word;
+import studio.unispace.simplywords.utils.Utilities;
 import studio.unispace.simplywords.views.RatingView;
 
 /**
@@ -80,7 +81,15 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                         mActivity.deleteWordFromDictionary(position);
                     }
                 });
-                builder.show();
+                final AlertDialog ad = builder.create();
+                ad.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        ad.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(mActivity, R.color.colorPrimaryLight));
+                        ad.getButton(Dialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(mActivity, R.color.colorAccent));
+                    }
+                });
+                ad.show();
             }
         });
         holder.mView.findViewById(R.id.word_list_item_edit).setOnClickListener(new View.OnClickListener() {
@@ -145,7 +154,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         if (!query.equals("")) {
             mWords = new LinkedList<>();
             for (Word w : mActivity.dict.words) {
-                if (w.word.contains(query)) {
+                if (w.word.startsWith(query)) {
                     mWords.add(w);
                 }
             }
@@ -159,30 +168,15 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     }
 
     public void sortByInitialLetter () {
-        Collections.sort(mWords, new Comparator<Word>() {
-            @Override
-            public int compare(Word lhs, Word rhs) {
-                return lhs.word.compareToIgnoreCase(rhs.word);
-            }
-        });
+        Utilities.sortWordsByInitialLetter(mWords);
     }
 
     public void sortByRating () {
-        Collections.sort(mWords, new Comparator<Word>() {
-            @Override
-            public int compare(Word lhs, Word rhs) {
-                return (int)(rhs.rating - lhs.rating);
-            }
-        });
+        Utilities.sortWordsByRating(mWords);
     }
 
     public void sortByCreatedDate () {
-        Collections.sort(mWords, new Comparator<Word>() {
-            @Override
-            public int compare(Word lhs, Word rhs) {
-                return (int)(rhs.createTime - lhs.createTime);
-            }
-        });
+        Utilities.sortWordsByCreatedDate(mWords);
     }
 
 }

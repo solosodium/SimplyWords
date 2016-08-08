@@ -12,13 +12,17 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import studio.unispace.simplywords.adapters.WordListAdapter;
 import studio.unispace.simplywords.dialogs.AddWordDialog;
 import studio.unispace.simplywords.models.Dictionary;
 import studio.unispace.simplywords.models.Word;
+import studio.unispace.simplywords.utils.Utilities;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView wordList;
     private LinearLayoutManager linearLayoutManager;
     private WordListAdapter wordListAdapter;
+    private FloatingActionButton fab;
+
+    private float wordListPrevTouchY = 0f;
+    private Animation fabHide;
+    private Animation fabShow;
+    private boolean isFabShow = true;
+    private float fabTranslateOffsetY = 300f;
+    private long fabTranslateDuration = 300L;
 
     public Dictionary dict;
 
@@ -38,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //
         // FAB
         //
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -55,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        fabHide = new TranslateAnimation(0f, 0f, 0f, fabTranslateOffsetY);
+        fabHide.setDuration(fabTranslateDuration);
+        fabHide.setFillEnabled(true);
+        fabHide.setFillAfter(true);
+        fabShow = new TranslateAnimation(0f, 0f, fabTranslateOffsetY, 0f);
+        fabShow.setDuration(fabTranslateDuration);
         //
         // load dictionary data
         //
@@ -62,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
         //
         // initialize views
         //
-        hintText = (TextView)findViewById(R.id.main_hint);
-        hintText.setVisibility(dict.words.size() == 0 ? View.VISIBLE : View.INVISIBLE);
         wordList = (RecyclerView)findViewById(R.id.main_word_list);
         if (wordList != null) {
             wordList.setHasFixedSize(true);
@@ -72,6 +88,46 @@ public class MainActivity extends AppCompatActivity {
             wordListAdapter = new WordListAdapter(this);
             wordList.setAdapter(wordListAdapter);
         }
+        wordList.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (e.getPointerCount() > 0) {
+                        MotionEvent.PointerCoords coord = new MotionEvent.PointerCoords();
+                        e.getPointerCoords(0, coord);
+                        wordListPrevTouchY = coord.y;
+                    }
+                }
+                else if (e.getAction() == MotionEvent.ACTION_MOVE){
+                    if (e.getPointerCount() > 0) {
+                        int maxScroll = rv.computeVerticalScrollRange();
+                        int currentScroll = rv.computeVerticalScrollOffset() + rv.computeVerticalScrollExtent();
+                        MotionEvent.PointerCoords coord = new MotionEvent.PointerCoords();
+                        e.getPointerCoords(0, coord);
+                        if (currentScroll >= maxScroll && coord.y - wordListPrevTouchY < -10f) {
+                            // over scroll
+                            showHideFab(false);
+                        }
+                        if (coord.y - wordListPrevTouchY > 10f) {
+                            // cancel over scroll
+                            showHideFab(true);
+                        }
+                        wordListPrevTouchY = coord.y;
+                    }
+                }
+                return false;
+            }
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                // DO NOTHING
+            }
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                // DO NOTHING
+            }
+        });
+        hintText = (TextView)findViewById(R.id.main_hint);
+        hintText.setVisibility(wordListAdapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -108,16 +164,22 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_sort_initial_letter) {
+            Utilities.sortWordsByInitialLetter(dict.words);
+            saveDictionary();
             wordListAdapter.sortByInitialLetter();
             refreshList();
             return true;
         }
         else if (id == R.id.action_sort_rating) {
+            Utilities.sortWordsByRating(dict.words);
+            saveDictionary();
             wordListAdapter.sortByRating();
             refreshList();
             return true;
         }
         else if (id == R.id.action_sort_created_date) {
+            Utilities.sortWordsByCreatedDate(dict.words);
+            saveDictionary();
             wordListAdapter.sortByCreatedDate();
             refreshList();
             return true;
@@ -154,8 +216,30 @@ public class MainActivity extends AppCompatActivity {
         // update view
         wordListAdapter.notifyDataSetChanged();
         // update hint text
-        if (hintText != null) {
-            hintText.setVisibility(dict.words.size() == 0 ? View.VISIBLE : View.INVISIBLE);
+        hintText.setVisibility(wordListAdapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+        // show fab
+        if (wordListAdapter.getItemCount() == 0) {
+            showHideFab(true);
+        }
+    }
+
+    //
+    // utility
+    //
+
+    private void showHideFab (boolean isShow) {
+        if (!isShow) {
+            // hide
+            if (isFabShow && wordListAdapter.getItemCount() > 0) {
+                isFabShow = false;
+                fab.startAnimation(fabHide);
+            }
+        } else {
+            // show
+            if (!isFabShow) {
+                isFabShow = true;
+                fab.startAnimation(fabShow);
+            }
         }
     }
 

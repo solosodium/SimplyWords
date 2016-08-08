@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.view.LayoutInflater;
@@ -57,7 +58,15 @@ public class AddWordDialog extends DialogFragment {
         });
         builder.setNegativeButton(R.string.add_word_dialog_cancel_label, null);
         builder.setCancelable(true);
-        return builder.create();
+        final AlertDialog ad = builder.create();
+        ad.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                ad.getButton(Dialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+                ad.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryLight));
+            }
+        });
+        return ad;
     }
 
 }

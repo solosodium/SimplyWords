@@ -42,7 +42,9 @@
                     android:layout_height="match_parent"
                     android:textSize="@dimen/word_list_item_word_font_size"
                     android:gravity="left|center_vertical"
-                    android:ellipsize="marquee"/>
+                    android:ellipsize="marquee"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"/>
 
                 <ImageButton
                     android:id="@+id/word_list_item_delete"
