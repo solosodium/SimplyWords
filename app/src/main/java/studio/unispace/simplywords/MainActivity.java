@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private Animation fabHide;
     private Animation fabShow;
     private boolean isFabShow = true;
-    private float fabTranslateOffsetY = 300f;
-    private long fabTranslateDuration = 300L;
+    private float fabTranslateOffsetY = 400f;
+    private long fabTranslateDuration = 200L;
 
     public Dictionary dict;
 
