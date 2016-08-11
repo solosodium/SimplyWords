@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,7 +69,12 @@ public class Dictionary {
         // prepare data
         Gson gson = new Gson();
         String serialized = gson.toJson(dict);
-        byte[] bytes = serialized.getBytes();
+        byte[] bytes;
+        if (Charset.availableCharsets().containsKey("UTF-8")) {
+            bytes = serialized.getBytes(Charset.forName("UTF-8"));
+        } else {
+            bytes = serialized.getBytes(Charset.defaultCharset());
+        }
         File file = new File(root_path + "/" + FILE_NAME);
         try {
             FileOutputStream fos = new FileOutputStream(file);
@@ -100,7 +106,7 @@ public class Dictionary {
                 byte[] buffer = new byte[1024];
                 int n;
                 while ((n = fis.read(buffer)) != -1) {
-                    sb.append(new String(buffer, 0, n));
+                    sb.append(new String(buffer, 0, n, "UTF-8"));
                 }
             } catch (IOException e) {
                 Log.e(TAG, "read json file error");

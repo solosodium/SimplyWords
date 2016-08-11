@@ -60,7 +60,7 @@ public class EditWordDialog extends DialogFragment {
                 // update word
                 word.word = ((EditText)v.findViewById(R.id.add_word_word)).getText().toString();
                 word.definition = ((EditText)v.findViewById(R.id.add_word_definition)).getText().toString();
-                word.remark = ((EditText)v.findViewById(R.id.add_word_remark)).getText().toString();
+                word.remark = ((EditText)v.findViewById(R.id.add_word_remark)). getText().toString();
                 word.rating = (float)((AppCompatSeekBar)v.findViewById(R.id.add_word_rating)).getProgress();
                 // add word to dictionary
                 ((MainActivity)getActivity()).saveDictionary();

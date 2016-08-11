@@ -39,9 +39,6 @@ public class ReviewWordDialog extends DialogFragment {
         ((TextView)v.findViewById(R.id.review_word_remark)).setText(word.remark);
         final TextView rating = (TextView)v.findViewById(R.id.review_word_rating);
         rating.setText(String.valueOf(String.valueOf(word.rating.intValue())));
-        // add visited timestamp
-        word.addVisitTime();
-        activity.saveDictionary();
         // buttons
         (v.findViewById(R.id.review_word_down_vote)).setOnClickListener(new View.OnClickListener() {
             @Override
