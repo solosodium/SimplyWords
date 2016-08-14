@@ -20,6 +20,15 @@ public class Utilities {
         });
     }
 
+    public static void sortWordsByInitialLetterReverse (List<Word> words) {
+        Collections.sort(words, new Comparator<Word>() {
+            @Override
+            public int compare(Word lhs, Word rhs) {
+                return rhs.word.compareToIgnoreCase(lhs.word);
+            }
+        });
+    }
+
     public static void sortWordsByRating (List<Word> words) {
         Collections.sort(words, new Comparator<Word>() {
             @Override
@@ -29,11 +38,29 @@ public class Utilities {
         });
     }
 
+    public static void sortWordsByRatingReverse (List<Word> words) {
+        Collections.sort(words, new Comparator<Word>() {
+            @Override
+            public int compare(Word lhs, Word rhs) {
+                return (int)(lhs.rating - rhs.rating);
+            }
+        });
+    }
+
     public static void sortWordsByCreatedDate (List<Word> words) {
         Collections.sort(words, new Comparator<Word>() {
             @Override
             public int compare(Word lhs, Word rhs) {
                 return (int)(rhs.createTime - lhs.createTime);
+            }
+        });
+    }
+
+    public static void sortWordsByCreatedDateReverse (List<Word> words) {
+        Collections.sort(words, new Comparator<Word>() {
+            @Override
+            public int compare(Word lhs, Word rhs) {
+                return (int)(lhs.createTime - rhs.createTime);
             }
         });
     }

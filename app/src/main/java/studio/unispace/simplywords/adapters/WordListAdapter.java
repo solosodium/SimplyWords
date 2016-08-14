@@ -35,6 +35,11 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     private MainActivity mActivity;
     private List<Word> mWords;
+    private List<Integer> mRawPositions;
+
+    private boolean lastSortByInitialLetter = false;
+    private boolean lastSortByRating = false;
+    private boolean lastSortByCreatedDate = false;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
@@ -47,6 +52,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     public WordListAdapter (MainActivity activity) {
         mActivity = activity;
         mWords = activity.dict.words;
+        mRawPositions = new LinkedList<>();
+        for (int i=0; i<activity.dict.words.size(); i++) {
+            mRawPositions.add(i);
+        }
         // has unique id for animation
         setHasStableIds(true);
     }
@@ -78,7 +87,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 builder.setPositiveButton(R.string.delete_word_dialog_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mActivity.deleteWordFromDictionary(position);
+                        mActivity.deleteWordFromDictionary(mRawPositions.get(position));
                     }
                 });
                 final AlertDialog ad = builder.create();
@@ -106,7 +115,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 EditWordDialog editWordDialog = new EditWordDialog();
                 // pass arguments
                 Bundle args = new Bundle();
-                args.putInt(EDIT_WORD_DIALOG_WORD_POS, position);
+                args.putInt(EDIT_WORD_DIALOG_WORD_POS, mRawPositions.get(position));
                 editWordDialog.setArguments(args);
                 // show dialog
                 editWordDialog.show(ft, "edit_word_dialog");
@@ -126,7 +135,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 ReviewWordDialog reviewWordDialog = new ReviewWordDialog();
                 // pass arguments
                 Bundle args = new Bundle();
-                args.putInt(REVIEW_WORD_DIALOG_WORD_POS, position);
+                args.putInt(REVIEW_WORD_DIALOG_WORD_POS, mRawPositions.get(position));
                 reviewWordDialog.setArguments(args);
                 // show dialog
                 reviewWordDialog.show(ft, "review_word_dialog");
@@ -153,9 +162,12 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     public void filter (String query) {
         if (!query.equals("")) {
             mWords = new LinkedList<>();
-            for (Word w : mActivity.dict.words) {
+            mRawPositions.clear();
+            for (int i=0; i<mActivity.dict.words.size(); i++) {
+                Word w = mActivity.dict.words.get(i);
                 if (w.word.startsWith(query)) {
                     mWords.add(w);
+                    mRawPositions.add(i);
                 }
             }
         } else {
@@ -165,18 +177,41 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     public void consolidateWords () {
         mWords = mActivity.dict.words;
+        mRawPositions.clear();
+        for (int i=0; i<mActivity.dict.words.size(); i++) {
+            mRawPositions.add(i);
+        }
+        lastSortByInitialLetter = lastSortByRating = lastSortByCreatedDate = false;
     }
 
     public void sortByInitialLetter () {
-        Utilities.sortWordsByInitialLetter(mWords);
+        if (!lastSortByInitialLetter) {
+            Utilities.sortWordsByInitialLetter(mWords);
+        } else {
+            Utilities.sortWordsByInitialLetterReverse(mWords);
+        }
+        lastSortByInitialLetter = !lastSortByInitialLetter;
+        lastSortByRating = lastSortByCreatedDate = false;
     }
 
     public void sortByRating () {
-        Utilities.sortWordsByRating(mWords);
+        if (!lastSortByRating) {
+            Utilities.sortWordsByRating(mWords);
+        } else {
+            Utilities.sortWordsByRatingReverse(mWords);
+        }
+        lastSortByRating = !lastSortByRating;
+        lastSortByInitialLetter = lastSortByCreatedDate = false;
     }
 
     public void sortByCreatedDate () {
-        Utilities.sortWordsByCreatedDate(mWords);
+        if (!lastSortByCreatedDate) {
+            Utilities.sortWordsByCreatedDate(mWords);
+        } else {
+            Utilities.sortWordsByCreatedDateReverse(mWords);
+        }
+        lastSortByCreatedDate = !lastSortByCreatedDate;
+        lastSortByInitialLetter = lastSortByRating = false;
     }
 
 }
