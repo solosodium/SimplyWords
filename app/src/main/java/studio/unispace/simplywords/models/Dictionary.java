@@ -24,11 +24,11 @@ public class Dictionary {
 
     private static final String TAG = "Dictionary.java";
 
-    private static final String FILE_NAME = "dictionary.json";
-
     /**
      * Class Dictionay
      */
+
+    public String name;
 
     public List<Word> words;
 
@@ -75,7 +75,7 @@ public class Dictionary {
         } else {
             bytes = serialized.getBytes(Charset.defaultCharset());
         }
-        File file = new File(root_path + "/" + FILE_NAME);
+        File file = new File(root_path + "/" + dict.name);
         try {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(bytes);
@@ -86,7 +86,7 @@ public class Dictionary {
         }
     }
 
-    public static Dictionary load (Context ctx) {
+    public static Dictionary load (Context ctx, String name) {
         // get root directory
         String root_path;
         File root_dir = ctx.getExternalFilesDir(null);
@@ -97,7 +97,7 @@ public class Dictionary {
             return null;
         }
         // check file exist
-        File file = new File(root_path + "/" + FILE_NAME);
+        File file = new File(root_path + "/" + name);
         if (file.exists()) {
             // read file
             StringBuffer sb = new StringBuffer("");
@@ -132,11 +132,12 @@ public class Dictionary {
 
     public static void Testing (Context ctx) {
         Dictionary dict = new Dictionary();
+        dict.name = "test";
         Word w = new Word();
         w.word = "ni ma";
         dict.addWord(w);
         Dictionary.save(ctx, dict);
-        Dictionary dict2 = Dictionary.load(ctx);
+        Dictionary dict2 = Dictionary.load(ctx, dict.name);
         Log.d(TAG, dict2.words.get(0).word);
     }
 

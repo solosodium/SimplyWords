@@ -2,7 +2,10 @@
 
     <!-- app wide -->
     <string name="app_name">Simply Words</string>
-    <string name="placeholder_text">Word list is empty, press \'\'+\'\' to add words.</string>
+    <string name="main_activity_title">Word List</string>
+    <string name="dict_activity_title">Simply Words</string>
+    <string name="main_placeholder_text">Word list is empty, press \'\'+\'\' to add words.</string>
+    <string name="dict_placeholder_text">There is no vocabulary group, press \'\'+\'\' to add.</string>
 
     <!-- MainActivity menu -->
     <string name="action_search">Search</string>
@@ -37,5 +40,6 @@
     <string name="edit_word_dialog_title">Edit Word</string>
     <string name="edit_word_dialog_done_label">Save</string>
     <string name="edit_word_dialog_cancel_label">Cancel</string>
+    <string name="title_activity_dict">DictActivity</string>
 
 </resources>

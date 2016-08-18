@@ -41,7 +41,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     private boolean lastSortByRating = false;
     private boolean lastSortByCreatedDate = false;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
         public ViewHolder (View v) {
             super(v);
@@ -65,16 +65,16 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     public WordListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_list_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        // set the view's size, margins, padding and layout parameters
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mWords.get(position).word);
-        ((RatingView)holder.mView.findViewById(R.id.word_list_item_rating)).setRating(mWords.get(position).rating);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final int pos = holder.getAdapterPosition();
+        ((TextView)holder.mView.findViewById(R.id.word_list_item_word)).setText(mWords.get(pos).word);
+        ((RatingView)holder.mView.findViewById(R.id.word_list_item_rating)).setRating(mWords.get(pos).rating);
         holder.mView.findViewById(R.id.word_list_item_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +87,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 builder.setPositiveButton(R.string.delete_word_dialog_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mActivity.deleteWordFromDictionary(mRawPositions.get(position));
+                        mActivity.deleteWordFromDictionary(mRawPositions.get(pos));
                     }
                 });
                 final AlertDialog ad = builder.create();
@@ -115,7 +115,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 EditWordDialog editWordDialog = new EditWordDialog();
                 // pass arguments
                 Bundle args = new Bundle();
-                args.putInt(EDIT_WORD_DIALOG_WORD_POS, mRawPositions.get(position));
+                args.putInt(EDIT_WORD_DIALOG_WORD_POS, mRawPositions.get(pos));
                 editWordDialog.setArguments(args);
                 // show dialog
                 editWordDialog.show(ft, "edit_word_dialog");
@@ -135,7 +135,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 ReviewWordDialog reviewWordDialog = new ReviewWordDialog();
                 // pass arguments
                 Bundle args = new Bundle();
-                args.putInt(REVIEW_WORD_DIALOG_WORD_POS, mRawPositions.get(position));
+                args.putInt(REVIEW_WORD_DIALOG_WORD_POS, mRawPositions.get(pos));
                 reviewWordDialog.setArguments(args);
                 // show dialog
                 reviewWordDialog.show(ft, "review_word_dialog");

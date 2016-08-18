@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="studio.unispace.simplywords.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="studio.unispace.simplywords.DictActivity"
+    tools:showIn="@layout/activity_dict">
 
     <TextView
-        android:id="@+id/main_hint"
+        android:id="@+id/dict_hint"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/main_placeholder_text"/>
+        android:text="@string/dict_placeholder_text"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_word_list"
+        android:id="@+id/dict_dict_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="ifContentScrolls">

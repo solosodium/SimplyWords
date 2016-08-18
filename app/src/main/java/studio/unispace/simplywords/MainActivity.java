@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
         fabShow = new TranslateAnimation(0f, 0f, fabTranslateOffsetY, 0f);
         fabShow.setDuration(fabTranslateDuration);
         //
-        // load dictionary data
+        // load dictionary data TODO: fix this static name thingy
         //
-        dict = Dictionary.load(this);
+        dict = Dictionary.load(this, "dictionary");
         //
         // initialize views
         //
