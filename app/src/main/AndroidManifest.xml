@@ -16,6 +16,12 @@
             android:label="@string/main_activity_title"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+            <!--
+            <intent-filter>
+                <action android:dictName="android.intent.action.MAIN" />
+                <category android:dictName="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".DictActivity"
@@ -23,7 +29,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dict_list_item_height"
+    android:paddingLeft="@dimen/dict_list_item_horizontal_margin"
+    android:paddingTop="@dimen/dict_list_item_vertical_margin">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardCornerRadius="@dimen/dict_list_item_corner_radius"
+        card_view:cardElevation="@dimen/dict_list_item_elevation"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="-1dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:paddingLeft="@dimen/dict_list_item_horizontal_padding"
+                android:paddingRight="@dimen/dict_list_item_horizontal_padding"
+                android:paddingTop="@dimen/dict_list_item_vertical_padding"
+                android:paddingBottom="@dimen/dict_list_item_vertical_padding">
+
+                <TextView
+                    android:id="@+id/dict_list_item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/dict_list_item_font_size"
+                    android:gravity="left|top"
+                    android:ellipsize="marquee"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dict_list_item_horizontal_padding"
+                android:paddingRight="@dimen/dict_list_item_horizontal_padding"
+                android:paddingTop="@dimen/dict_list_item_vertical_padding"
+                android:paddingBottom="@dimen/dict_list_item_vertical_padding">
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_weight="0.55"
+                    android:layout_height="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/dict_list_item_delete"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_delete"
+                    android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackground"/>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_weight="0.05"
+                    android:layout_height="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/dict_list_item_edit"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_edit"
+                    android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackground"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

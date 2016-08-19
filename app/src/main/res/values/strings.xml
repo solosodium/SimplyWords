@@ -42,4 +42,15 @@
     <string name="edit_word_dialog_cancel_label">Cancel</string>
     <string name="title_activity_dict">DictActivity</string>
 
+    <!-- AddDictDialog -->
+    <string name="add_dict_dialog_title">Add Group</string>
+    <string name="add_dict_dialog_name_label">Name</string>
+    <string name="add_dict_dialog_cancel_label">Cancel</string>
+    <string name="add_dict_dialog_done_label">Add</string>
+
+    <!-- EditDictDialog -->
+    <string name="edit_dict_dialog_title">Edit Group</string>
+    <string name="edit_dict_dialog_cancel_label">Cancel</string>
+    <string name="edit_dict_dialog_done_label">Save</string>
+
 </resources>

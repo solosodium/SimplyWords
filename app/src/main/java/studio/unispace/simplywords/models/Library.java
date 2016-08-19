@@ -85,8 +85,8 @@ public class Library {
 
     public static void saveDictionary (Context ctx, String name) {
          // create blank dictionary
-        Dictionary dict = new Dictionary();
-        dict.name = name;
+        Dictionary dict = new Dictionary(name);
+        dict.dictName = name;
         Dictionary.save(ctx, dict);
     }
 

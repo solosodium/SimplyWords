@@ -14,8 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import studio.unispace.simplywords.adapters.WordListAdapter;
@@ -25,6 +25,8 @@ import studio.unispace.simplywords.models.Word;
 import studio.unispace.simplywords.utils.Utilities;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String DICTIONARY_KEY = "DICTIONARY_KEY";
 
     private TextView hintText;
     private RecyclerView wordList;
@@ -36,21 +38,30 @@ public class MainActivity extends AppCompatActivity {
     private Animation fabHide;
     private Animation fabShow;
     private boolean isFabShow = true;
-    private float fabTranslateOffsetY = 400f;
-    private long fabTranslateDuration = 200L;
+    private long fabAnimationDuration = 200L;
 
     public Dictionary dict;
+    public String dictName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //
+        // load dictionary data
+        //
+        dictName = getIntent().getExtras().getString(DICTIONARY_KEY);
+        dict = Dictionary.load(this, dictName);
+        //
+        // tool bar
+        //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(dictName);
         setSupportActionBar(toolbar);
         //
         // FAB
         //
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.main_fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,16 +78,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        fabHide = new TranslateAnimation(0f, 0f, 0f, fabTranslateOffsetY);
-        fabHide.setDuration(fabTranslateDuration);
+        fabHide = new AlphaAnimation(1f, 0f);
+        fabHide.setDuration(fabAnimationDuration);
         fabHide.setFillEnabled(true);
         fabHide.setFillAfter(true);
-        fabShow = new TranslateAnimation(0f, 0f, fabTranslateOffsetY, 0f);
-        fabShow.setDuration(fabTranslateDuration);
-        //
-        // load dictionary data TODO: fix this static name thingy
-        //
-        dict = Dictionary.load(this, "dictionary");
+        fabShow = new AlphaAnimation(0f, 1f);
+        fabShow.setDuration(fabAnimationDuration);
+        fabShow.setFillEnabled(true);
+        fabShow.setFillAfter(true);
         //
         // initialize views
         //
@@ -87,45 +96,45 @@ public class MainActivity extends AppCompatActivity {
             wordList.setLayoutManager(linearLayoutManager);
             wordListAdapter = new WordListAdapter(this);
             wordList.setAdapter(wordListAdapter);
+            wordList.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                @Override
+                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                    if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                        if (e.getPointerCount() > 0) {
+                            MotionEvent.PointerCoords coord = new MotionEvent.PointerCoords();
+                            e.getPointerCoords(0, coord);
+                            wordListPrevTouchY = coord.y;
+                        }
+                    }
+                    else if (e.getAction() == MotionEvent.ACTION_MOVE){
+                        if (e.getPointerCount() > 0) {
+                            int maxScroll = rv.computeVerticalScrollRange();
+                            int currentScroll = rv.computeVerticalScrollOffset() + rv.computeVerticalScrollExtent();
+                            MotionEvent.PointerCoords coord = new MotionEvent.PointerCoords();
+                            e.getPointerCoords(0, coord);
+                            if (currentScroll >= maxScroll && coord.y - wordListPrevTouchY < -10f) {
+                                // over scroll
+                                showHideFab(false);
+                            }
+                            if (coord.y - wordListPrevTouchY > 10f) {
+                                // cancel over scroll
+                                showHideFab(true);
+                            }
+                            wordListPrevTouchY = coord.y;
+                        }
+                    }
+                    return false;
+                }
+                @Override
+                public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                    // DO NOTHING
+                }
+                @Override
+                public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                    // DO NOTHING
+                }
+            });
         }
-        wordList.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                if (e.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (e.getPointerCount() > 0) {
-                        MotionEvent.PointerCoords coord = new MotionEvent.PointerCoords();
-                        e.getPointerCoords(0, coord);
-                        wordListPrevTouchY = coord.y;
-                    }
-                }
-                else if (e.getAction() == MotionEvent.ACTION_MOVE){
-                    if (e.getPointerCount() > 0) {
-                        int maxScroll = rv.computeVerticalScrollRange();
-                        int currentScroll = rv.computeVerticalScrollOffset() + rv.computeVerticalScrollExtent();
-                        MotionEvent.PointerCoords coord = new MotionEvent.PointerCoords();
-                        e.getPointerCoords(0, coord);
-                        if (currentScroll >= maxScroll && coord.y - wordListPrevTouchY < -10f) {
-                            // over scroll
-                            showHideFab(false);
-                        }
-                        if (coord.y - wordListPrevTouchY > 10f) {
-                            // cancel over scroll
-                            showHideFab(true);
-                        }
-                        wordListPrevTouchY = coord.y;
-                    }
-                }
-                return false;
-            }
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-                // DO NOTHING
-            }
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-                // DO NOTHING
-            }
-        });
         hintText = (TextView)findViewById(R.id.main_hint);
         hintText.setVisibility(wordListAdapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
     }
@@ -233,12 +242,14 @@ public class MainActivity extends AppCompatActivity {
             if (isFabShow && wordListAdapter.getItemCount() > 0) {
                 isFabShow = false;
                 fab.startAnimation(fabHide);
+                fab.setClickable(false);
             }
         } else {
             // show
             if (!isFabShow) {
                 isFabShow = true;
                 fab.startAnimation(fabShow);
+                fab.setClickable(true);
             }
         }
     }

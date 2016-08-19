@@ -22,4 +22,18 @@
     <dimen name="review_word_dialog_line_break">10dp</dimen>
     <dimen name="review_word_content_font_size">18sp</dimen>
     <dimen name="review_word_rating_bar_height">40dp</dimen>
+    <!-- dictionary list item -->
+    <dimen name="dict_list_item_height">120dp</dimen>
+    <dimen name="dict_list_item_elevation">2dp</dimen>
+    <dimen name="dict_list_item_corner_radius">0dp</dimen>
+    <dimen name="dict_list_item_horizontal_margin">4dp</dimen>
+    <dimen name="dict_list_item_vertical_margin">4dp</dimen>
+    <dimen name="dict_list_item_horizontal_padding">10dp</dimen>
+    <dimen name="dict_list_item_vertical_padding">10dp</dimen>
+    <dimen name="dict_list_item_font_size">20sp</dimen>
+    <dimen name="dict_list_item_space_size">5dp</dimen>
+    <!-- add dict dialog -->
+    <dimen name="add_dict_dialog_horizontal_padding">24dp</dimen>
+    <dimen name="add_dict_dialog_vertical_padding">20dp</dimen>
+    <dimen name="add_dict_dialog_line_break">10dp</dimen>
 </resources>

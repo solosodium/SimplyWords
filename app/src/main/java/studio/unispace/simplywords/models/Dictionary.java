@@ -28,11 +28,12 @@ public class Dictionary {
      * Class Dictionay
      */
 
-    public String name;
+    public String dictName;
 
     public List<Word> words;
 
-    public Dictionary () {
+    public Dictionary (String name) {
+        dictName = name;
         words = new LinkedList<>();
     }
 
@@ -75,7 +76,7 @@ public class Dictionary {
         } else {
             bytes = serialized.getBytes(Charset.defaultCharset());
         }
-        File file = new File(root_path + "/" + dict.name);
+        File file = new File(root_path + "/" + dict.dictName + ".json");
         try {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(bytes);
@@ -97,7 +98,7 @@ public class Dictionary {
             return null;
         }
         // check file exist
-        File file = new File(root_path + "/" + name);
+        File file = new File(root_path + "/" + name + ".json");
         if (file.exists()) {
             // read file
             StringBuffer sb = new StringBuffer("");
@@ -118,7 +119,7 @@ public class Dictionary {
         }
         else {
             // create empty file
-            Dictionary dict = new Dictionary();
+            Dictionary dict = new Dictionary(name);
             // save dictionary
             save(ctx, dict);
             // return
@@ -131,13 +132,12 @@ public class Dictionary {
      */
 
     public static void Testing (Context ctx) {
-        Dictionary dict = new Dictionary();
-        dict.name = "test";
+        Dictionary dict = new Dictionary("test");
         Word w = new Word();
         w.word = "ni ma";
         dict.addWord(w);
         Dictionary.save(ctx, dict);
-        Dictionary dict2 = Dictionary.load(ctx, dict.name);
+        Dictionary dict2 = Dictionary.load(ctx, dict.dictName);
         Log.d(TAG, dict2.words.get(0).word);
     }
 

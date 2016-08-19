@@ -51,9 +51,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     public WordListAdapter (MainActivity activity) {
         mActivity = activity;
-        mWords = activity.dict.words;
+        mWords = mActivity.dict.words;
         mRawPositions = new LinkedList<>();
-        for (int i=0; i<activity.dict.words.size(); i++) {
+        for (int i=0; i<mActivity.dict.words.size(); i++) {
             mRawPositions.add(i);
         }
         // has unique id for animation

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/add_dict_dialog_horizontal_padding"
+    android:paddingRight="@dimen/add_dict_dialog_horizontal_padding"
+    android:paddingTop="@dimen/add_dict_dialog_vertical_padding"
+    android:paddingBottom="@dimen/add_dict_dialog_vertical_padding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_dict_dialog_name_label"/>
+
+    <EditText
+        android:id="@+id/add_dict_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:inputType="text"/>
+
+</LinearLayout>
