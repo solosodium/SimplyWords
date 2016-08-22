@@ -53,4 +53,16 @@
     <string name="edit_dict_dialog_cancel_label">Cancel</string>
     <string name="edit_dict_dialog_done_label">Save</string>
 
+    <!-- delete dict dialog -->
+    <string name="delete_dict_dialog_title">Delete Group</string>
+    <string name="delete_dict_dialog_message">Are you sure you want to delete this group?</string>
+    <string name="delete_dict_dialog_cancel_label">Cancel</string>
+    <string name="delete_dict_dialog_done_label">Delete</string>
+
+    <!-- messages -->
+    <string name="dict_message_empty_dict_name">Group name can not be empty.</string>
+    <string name="dict_message_duplicate_dict_name">Group name already exists.</string>
+    <string name="dict_message_rename_dict_error">Failed to edit group name.</string>
+    <string name="main_message_empty_word_name">Word can not be empty.</string>
+
 </resources>

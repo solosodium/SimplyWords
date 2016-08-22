@@ -23,6 +23,8 @@ import studio.unispace.simplywords.models.Word;
  */
 public class EditWordDialog extends DialogFragment {
 
+    public static final String TAG = "EDIT_WORD_DIALOG";
+
     public EditWordDialog () {
         super();
     }

@@ -106,7 +106,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
             public void onClick(View v) {
                 // create edit dialog
                 FragmentTransaction ft = mActivity.getFragmentManager().beginTransaction();
-                Fragment prev = mActivity.getFragmentManager().findFragmentByTag("edit_word_dialog");
+                Fragment prev = mActivity.getFragmentManager().findFragmentByTag(EditWordDialog.TAG);
                 if (prev != null) {
                     ft.remove(prev);
                 }
@@ -118,7 +118,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 args.putInt(EDIT_WORD_DIALOG_WORD_POS, mRawPositions.get(pos));
                 editWordDialog.setArguments(args);
                 // show dialog
-                editWordDialog.show(ft, "edit_word_dialog");
+                editWordDialog.show(ft, EditWordDialog.TAG);
             }
         });
         holder.mView.setOnClickListener(new View.OnClickListener(){
@@ -126,7 +126,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
             public void onClick(View v) {
                 // create review dialog
                 FragmentTransaction ft = mActivity.getFragmentManager().beginTransaction();
-                Fragment prev = mActivity.getFragmentManager().findFragmentByTag("review_word_dialog");
+                Fragment prev = mActivity.getFragmentManager().findFragmentByTag(ReviewWordDialog.TAG);
                 if (prev != null) {
                     ft.remove(prev);
                 }
@@ -138,7 +138,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 args.putInt(REVIEW_WORD_DIALOG_WORD_POS, mRawPositions.get(pos));
                 reviewWordDialog.setArguments(args);
                 // show dialog
-                reviewWordDialog.show(ft, "review_word_dialog");
+                reviewWordDialog.show(ft, ReviewWordDialog.TAG);
             }
         });
     }

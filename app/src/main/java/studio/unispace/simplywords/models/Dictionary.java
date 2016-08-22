@@ -29,7 +29,6 @@ public class Dictionary {
      */
 
     public String dictName;
-
     public List<Word> words;
 
     public Dictionary (String name) {
@@ -125,20 +124,6 @@ public class Dictionary {
             // return
             return dict;
         }
-    }
-
-    /**
-     * unit testing
-     */
-
-    public static void Testing (Context ctx) {
-        Dictionary dict = new Dictionary("test");
-        Word w = new Word();
-        w.word = "ni ma";
-        dict.addWord(w);
-        Dictionary.save(ctx, dict);
-        Dictionary dict2 = Dictionary.load(ctx, dict.dictName);
-        Log.d(TAG, dict2.words.get(0).word);
     }
 
 }

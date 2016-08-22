@@ -3,7 +3,9 @@ package studio.unispace.simplywords;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String DICTIONARY_KEY = "DICTIONARY_KEY";
 
+    private CoordinatorLayout coordinatorLayout;
     private TextView hintText;
     private RecyclerView wordList;
     private LinearLayoutManager linearLayoutManager;
@@ -53,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         dictName = getIntent().getExtras().getString(DICTIONARY_KEY);
         dict = Dictionary.load(this, dictName);
         //
+        // coordinator layout
+        //
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.main_root);
+        //
         // tool bar
         //
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    Fragment prev = getFragmentManager().findFragmentByTag("add_word_dialog");
+                    Fragment prev = getFragmentManager().findFragmentByTag(AddWordDialog.TAG);
                     if (prev != null) {
                         ft.remove(prev);
                     }
                     ft.addToBackStack(null);
                     // create and show the dialog
                     AddWordDialog addWordDialog = new AddWordDialog();
-                    addWordDialog.show(ft, "add_word_dialog");
+                    addWordDialog.show(ft, AddWordDialog.TAG);
                 }
             });
         }
@@ -230,6 +237,11 @@ public class MainActivity extends AppCompatActivity {
         if (wordListAdapter.getItemCount() == 0) {
             showHideFab(true);
         }
+    }
+
+    public void showCandyMessage (String message) {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     //

@@ -7,6 +7,8 @@ import java.util.Calendar;
  */
 public class Word {
 
+    public static final String TAG = "Word.java";
+
     public Long id;
     public String word;
     public String definition;

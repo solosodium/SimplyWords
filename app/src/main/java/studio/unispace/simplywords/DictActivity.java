@@ -1,7 +1,11 @@
 package studio.unispace.simplywords;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +17,12 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 
 import studio.unispace.simplywords.adapters.DictListAdapter;
+import studio.unispace.simplywords.dialogs.AddDictDialog;
 import studio.unispace.simplywords.models.Library;
 
 public class DictActivity extends AppCompatActivity {
 
-
-
+    private CoordinatorLayout coordinatorLayout;
     private RecyclerView dictList;
     private GridLayoutManager gridLayoutManager;
     private DictListAdapter dictListAdapter;
@@ -44,6 +48,10 @@ public class DictActivity extends AppCompatActivity {
         //
         library = Library.load(this);
         //
+        // coordinator layout
+        //
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.dict_root);
+        //
         // fab initialize
         //
         fab = (FloatingActionButton) findViewById(R.id.dict_fab);
@@ -51,7 +59,16 @@ public class DictActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO: add behavior
+                    // create add dictionary dialog
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    Fragment prev = getFragmentManager().findFragmentByTag(AddDictDialog.TAG);
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+                    ft.addToBackStack(null);
+                    // create and show the dialog
+                    AddDictDialog addDictDialog = new AddDictDialog();
+                    addDictDialog.show(ft, AddDictDialog.TAG);
                 }
             });
         }
@@ -117,6 +134,53 @@ public class DictActivity extends AppCompatActivity {
         //
         hintText = (TextView)findViewById(R.id.dict_hint);
         hintText.setVisibility(library.dictionaries.size() > 0 ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    //
+    // public functions
+    //
+
+    public boolean addDictionaryToLibrary (String name) {
+        // add
+        boolean result =library.addDictionary(this, name);
+        // refresh list
+        refreshList();
+        // return
+        return result;
+    }
+
+    public boolean removeDictionaryFromLibrary (String name) {
+        // remove
+        boolean result = library.removeDictionary(this, name);
+        // refresh list
+        refreshList();
+        // return
+        return result;
+    }
+
+    public boolean renameDictionary (String oldName, String newName) {
+        // rename
+        boolean result = library.renameDictionary(this, oldName, newName);
+        // refresh list
+        refreshList();
+        // return
+        return result;
+    }
+
+    public void refreshList () {
+        // update view
+        dictListAdapter.notifyDataSetChanged();
+        // update hint text
+        hintText.setVisibility(dictListAdapter.getItemCount() == 0 ? View.VISIBLE : View.INVISIBLE);
+        // show fab
+        if (dictListAdapter.getItemCount() == 0) {
+            showHideFab(true);
+        }
+    }
+
+    public void showCandyMessage (String message) {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     //

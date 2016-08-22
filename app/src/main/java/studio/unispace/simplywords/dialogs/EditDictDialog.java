@@ -17,16 +17,22 @@ import studio.unispace.simplywords.R;
  * Created by haofu on 8/19/16.
  */
 
-public class AddDictDialog extends DialogFragment {
+public class EditDictDialog extends DialogFragment {
 
-    public static final String TAG = "ADD_DICT_DIALOG";
+    public static final String TAG = "EDIT_DICT_DIALOG";
+    public static final String OLD_NAME_KEY = "OLD_NAME_KEY";
 
-    public AddDictDialog () {
+    private String mOldName;
+
+    public EditDictDialog () {
         super();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // get argument
+        mOldName = getArguments().getString(OLD_NAME_KEY);
+        // build
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // set customized view
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -34,15 +40,15 @@ public class AddDictDialog extends DialogFragment {
         final EditText name = (EditText)view.findViewById(R.id.add_dict_name);
         builder.setView(view);
         // set basic dialog stuff
-        builder.setTitle(R.string.add_dict_dialog_title);
+        builder.setTitle(R.string.edit_dict_dialog_title);
         builder.setCancelable(true);
-        builder.setNegativeButton(R.string.add_dict_dialog_cancel_label, null);
-        builder.setPositiveButton(R.string.add_dict_dialog_done_label, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.edit_dict_dialog_cancel_label, null);
+        builder.setPositiveButton(R.string.edit_dict_dialog_done_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!name.getText().toString().equals("")) {
-                    if (!((DictActivity)getActivity()).addDictionaryToLibrary(name.getText().toString())) {
-                        ((DictActivity)getActivity()).showCandyMessage(getString(R.string.dict_message_duplicate_dict_name));
+                    if ( !(((DictActivity)getActivity()).renameDictionary(mOldName, name.getText().toString())) ) {
+                        ((DictActivity)getActivity()).showCandyMessage(getString(R.string.dict_message_rename_dict_error));
                     }
                 } else {
                     ((DictActivity)getActivity()).showCandyMessage(getString(R.string.dict_message_empty_dict_name));

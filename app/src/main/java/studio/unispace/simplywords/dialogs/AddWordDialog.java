@@ -22,6 +22,8 @@ import studio.unispace.simplywords.models.Word;
  */
 public class AddWordDialog extends DialogFragment {
 
+    public static final String TAG = "ADD_WORD_DIALOG";
+
     public AddWordDialog () {
         super();
     }
@@ -46,6 +48,10 @@ public class AddWordDialog extends DialogFragment {
         builder.setPositiveButton(R.string.add_word_dialog_done_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (((EditText)v.findViewById(R.id.add_word_word)).getText().toString().equals("")) {
+                    ((MainActivity)getActivity()).showCandyMessage(getString(R.string.main_message_empty_word_name));
+                    return;
+                }
                 // create word
                 Word word = new Word();
                 word.word = ((EditText)v.findViewById(R.id.add_word_word)).getText().toString();

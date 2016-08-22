@@ -22,32 +22,95 @@ public class Library {
     }
 
     public boolean addDictionary (Context ctx, String name) {
+        File dir = getDir(ctx);
+        if (dir == null) {
+            return false;
+        }
         for (String dict : dictionaries) {
             if (dict.equals(name)) {
                 return false;
             }
         }
+        // create blank dictionary
+        Dictionary dict = new Dictionary(name);
+        dict.dictName = name;
+        Dictionary.save(ctx, dict);
+        // update
         dictionaries.add(name);
-        saveDictionary(ctx, name);
         return true;
     }
 
     public boolean removeDictionary (Context ctx, String name) {
-        boolean is_found = false;
-        for (String dict : dictionaries) {
-            if (dict.equals(name)) {
-                is_found = true;
-                break;
-            }
-        }
-        if (is_found) {
-            dictionaries.remove(name);
-            deleteDictionary(ctx, name);
-            return true;
-        } else {
+        File dir = getDir(ctx);
+        if (dir == null) {
             return false;
         }
+        // search all files
+        for (File file : dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().matches(".+.json");
+            }
+        })) {
+            if (file != null) {
+                String filename = file.getName().replaceAll(".json", "");
+                if (filename.equals(name)) {
+                    file.delete();
+                    dictionaries.remove(name);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
+
+    public boolean renameDictionary (Context ctx, String oldName, String newName) {
+        File dir = getDir(ctx);
+        if (dir == null) {
+            return false;
+        }
+        // search duplicate
+        for (File file : dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().matches(".+.json");
+            }
+        })) {
+            if (file != null) {
+                String filename = file.getName().replaceAll(".json", "");
+                if (filename.equals(newName)) {
+                    return false;
+                }
+            }
+        }
+        // search all files
+        for (File file : dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().matches(".+.json");
+            }
+        })) {
+            if (file != null) {
+                String filename = file.getName().replaceAll(".json", "");
+                if (filename.equals(oldName)) {
+                    File in = new File(dir, file.getName());
+                    File out = new File(dir, newName + ".json");
+                    if (in.renameTo(out)) {
+                        dictionaries.remove(oldName);
+                        dictionaries.add(newName);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    //
+    // public static function for initialization
+    //
 
     public static Library load (Context ctx) {
         // get root directory
@@ -83,14 +146,7 @@ public class Library {
         return lib;
     }
 
-    public static void saveDictionary (Context ctx, String name) {
-         // create blank dictionary
-        Dictionary dict = new Dictionary(name);
-        dict.dictName = name;
-        Dictionary.save(ctx, dict);
-    }
-
-    public static void deleteDictionary (Context ctx, String name) {
+    private File getDir (Context ctx) {
         // get root directory
         String root_path;
         File root_dir = ctx.getExternalFilesDir(null);
@@ -98,30 +154,17 @@ public class Library {
             root_path = root_dir.getAbsolutePath();
         } else {
             Log.e(TAG, "root directory not found");
-            return;
+            return null;
         }
         // make sure directory exists
         File dir = new File(root_path);
         if (!dir.exists()) {
             if (!dir.mkdir()) {
                 Log.e(TAG, "create root directory error");
-                return;
+                return null;
             }
         }
-        // search all files
-        for (File file : dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().matches(".+.json");
-            }
-        })) {
-            if (file != null) {
-                String filename = file.getName().replaceAll(".json", "");
-                if (filename.equals(name)) {
-                    file.delete();
-                }
-            }
-        }
+        return dir;
     }
 
 }

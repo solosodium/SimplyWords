@@ -20,6 +20,8 @@ import studio.unispace.simplywords.models.Word;
  */
 public class ReviewWordDialog extends DialogFragment {
 
+    public static final String TAG = "REVIEW_WORD_DIALOG";
+
     public ReviewWordDialog () {
         super();
     }

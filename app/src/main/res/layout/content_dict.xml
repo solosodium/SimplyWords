@@ -21,8 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="ifContentScrolls"
-        android:paddingRight="@dimen/dict_list_item_horizontal_margin"
-        android:scrollbars="vertical">
+        android:paddingRight="@dimen/dict_list_item_horizontal_margin">
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

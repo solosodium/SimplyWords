@@ -39,6 +39,7 @@
                     android:textSize="@dimen/dict_list_item_font_size"
                     android:gravity="left|top"
                     android:ellipsize="marquee"
+                    android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"/>
 
