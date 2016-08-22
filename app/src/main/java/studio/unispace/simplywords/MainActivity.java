@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //
         // load dictionary data
         //
-        dictName = getIntent().getExtras().getString(DICTIONARY_KEY);
+        dictName = getIntent().getExtras().getString(DICTIONARY_KEY, dictName);
         dict = Dictionary.load(this, dictName);
         //
         // coordinator layout
@@ -201,6 +201,18 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(DICTIONARY_KEY, dictName);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        dictName = savedInstanceState.getString(DICTIONARY_KEY, dictName);
     }
 
     //
