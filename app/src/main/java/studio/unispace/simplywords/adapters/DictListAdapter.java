@@ -68,7 +68,7 @@ public class DictListAdapter extends RecyclerView.Adapter<DictListAdapter.ViewHo
                 // start word list
                 Intent it = new Intent(mActivity, MainActivity.class);
                 it.putExtra(MainActivity.DICTIONARY_KEY, mActivity.library.dictionaries.get(pos));
-                mActivity.startActivity(it);
+                mActivity.startActivityForResult(it, 0);
             }
         });
         ImageButton delete = (ImageButton)holder.mView.findViewById(R.id.dict_list_item_delete);

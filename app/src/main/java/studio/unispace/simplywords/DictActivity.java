@@ -2,6 +2,7 @@ package studio.unispace.simplywords;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -134,6 +135,13 @@ public class DictActivity extends AppCompatActivity {
         //
         hintText = (TextView)findViewById(R.id.dict_hint);
         hintText.setVisibility(library.dictionaries.size() > 0 ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // show fab
+        showHideFab(true);
     }
 
     //
