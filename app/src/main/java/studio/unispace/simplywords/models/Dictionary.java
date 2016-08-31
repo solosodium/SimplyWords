@@ -5,10 +5,14 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,17 +72,16 @@ public class Dictionary {
         }
         // prepare data
         Gson gson = new Gson();
-        String serialized = gson.toJson(dict);
-        byte[] bytes;
-        if (Charset.availableCharsets().containsKey("UTF-8")) {
-            bytes = serialized.getBytes(Charset.forName("UTF-8"));
-        } else {
-            bytes = serialized.getBytes(Charset.defaultCharset());
-        }
+        String serialized = gson.toJson(dict, Dictionary.class);
+        Charset charset = Charset.availableCharsets().containsKey("UTF-8") ? Charset.forName("UTF-8") : Charset.defaultCharset();
         File file = new File(root_path + "/" + dict.dictName + ".json");
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(bytes);
+            OutputStreamWriter osw = new OutputStreamWriter(fos, charset);
+            BufferedWriter bw = new BufferedWriter(osw);
+            bw.write(serialized);
+            bw.close();
+            osw.close();
             fos.close();
         } catch (IOException e) {
             Log.e(TAG, "write json file error");
@@ -100,21 +103,35 @@ public class Dictionary {
         File file = new File(root_path + "/" + name + ".json");
         if (file.exists()) {
             // read file
+            Charset charset = Charset.availableCharsets().containsKey("UTF-8") ? Charset.forName("UTF-8") : Charset.defaultCharset();
             StringBuffer sb = new StringBuffer("");
             try {
                 FileInputStream fis = new FileInputStream(file);
-                byte[] buffer = new byte[1024];
-                int n;
-                while ((n = fis.read(buffer)) != -1) {
-                    sb.append(new String(buffer, 0, n, "UTF-8"));
+                InputStreamReader isr = new InputStreamReader(fis, charset);
+                BufferedReader br = new BufferedReader(isr);
+                String line;
+                line = br.readLine();
+                while (line != null) {
+                    sb.append(line);
+                    line = br.readLine();
                 }
+                br.close();
+                isr.close();
+                fis.close();
             } catch (IOException e) {
                 Log.e(TAG, "read json file error");
                 e.printStackTrace();
             }
             // GSON
             Gson gson = new Gson();
-            return gson.fromJson(sb.toString(), Dictionary.class);
+            Dictionary result = gson.fromJson(sb.toString(), Dictionary.class);
+            // change name if necessary
+            if (!result.dictName.equals(name)) {
+                result.dictName = name;
+                save(ctx, result);
+            }
+            // return
+            return result;
         }
         else {
             // create empty file
