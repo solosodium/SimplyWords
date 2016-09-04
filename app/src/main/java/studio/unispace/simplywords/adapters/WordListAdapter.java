@@ -186,32 +186,50 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     public void sortByInitialLetter () {
         if (!lastSortByInitialLetter) {
-            Utilities.sortWordsByInitialLetter(mWords);
+            Utilities.sortWordsByInitialLetter(mActivity.dict.words);
         } else {
-            Utilities.sortWordsByInitialLetterReverse(mWords);
+            Utilities.sortWordsByInitialLetterReverse(mActivity.dict.words);
         }
         lastSortByInitialLetter = !lastSortByInitialLetter;
         lastSortByRating = lastSortByCreatedDate = false;
+        mActivity.saveDictionary();
+        if (mActivity.isSearchActive) {
+            filter(mActivity.searchText);
+        } else {
+            filter("");
+        }
     }
 
     public void sortByRating () {
         if (!lastSortByRating) {
-            Utilities.sortWordsByRating(mWords);
+            Utilities.sortWordsByRating(mActivity.dict.words);
         } else {
-            Utilities.sortWordsByRatingReverse(mWords);
+            Utilities.sortWordsByRatingReverse(mActivity.dict.words);
         }
         lastSortByRating = !lastSortByRating;
         lastSortByInitialLetter = lastSortByCreatedDate = false;
+        mActivity.saveDictionary();
+        if (mActivity.isSearchActive) {
+            filter(mActivity.searchText);
+        } else {
+            filter("");
+        }
     }
 
     public void sortByCreatedDate () {
         if (!lastSortByCreatedDate) {
-            Utilities.sortWordsByCreatedDate(mWords);
+            Utilities.sortWordsByCreatedDate(mActivity.dict.words);
         } else {
-            Utilities.sortWordsByCreatedDateReverse(mWords);
+            Utilities.sortWordsByCreatedDateReverse(mActivity.dict.words);
         }
         lastSortByCreatedDate = !lastSortByCreatedDate;
         lastSortByInitialLetter = lastSortByRating = false;
+        mActivity.saveDictionary();
+        if (mActivity.isSearchActive) {
+            filter(mActivity.searchText);
+        } else {
+            filter("");
+        }
     }
 
 }

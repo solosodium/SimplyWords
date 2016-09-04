@@ -24,7 +24,6 @@ import studio.unispace.simplywords.adapters.WordListAdapter;
 import studio.unispace.simplywords.dialogs.AddWordDialog;
 import studio.unispace.simplywords.models.Dictionary;
 import studio.unispace.simplywords.models.Word;
-import studio.unispace.simplywords.utils.Utilities;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private Animation fabShow;
     private boolean isFabShow = true;
     private long fabAnimationDuration = 200L;
+
+    public boolean isSearchActive = false;
+    public String searchText = "";
 
     public Dictionary dict;
     public String dictName;
@@ -156,14 +158,29 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                wordListAdapter.filter(query);
+                searchText = query;
+                wordListAdapter.filter(searchText);
                 refreshList();
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                wordListAdapter.filter(newText);
+                searchText = newText;
+                wordListAdapter.filter(searchText);
                 refreshList();
+                return true;
+            }
+        });
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                isSearchActive = true;
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                isSearchActive = false;
                 return true;
             }
         });
@@ -180,22 +197,16 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_sort_initial_letter) {
-            Utilities.sortWordsByInitialLetter(dict.words);
-            saveDictionary();
             wordListAdapter.sortByInitialLetter();
             refreshList();
             return true;
         }
         else if (id == R.id.action_sort_rating) {
-            Utilities.sortWordsByRating(dict.words);
-            saveDictionary();
             wordListAdapter.sortByRating();
             refreshList();
             return true;
         }
         else if (id == R.id.action_sort_created_date) {
-            Utilities.sortWordsByCreatedDate(dict.words);
-            saveDictionary();
             wordListAdapter.sortByCreatedDate();
             refreshList();
             return true;
